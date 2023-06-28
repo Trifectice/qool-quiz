@@ -85,6 +85,16 @@ function checkAnswer(event) {
     endQuiz();
   }
 }
-//Timer stop 
-//Score calculation
+//Timer stop and score calculation
+function endQuiz() {
+  clearInterval(timerInterval); 
+  questionElement.textContent = "Quiz Over!";
+  choicesElement.innerHTML = "";
+  var score = (correctAnswers / questions.length) * 100;
+  resultElement.textContent = "Your score: " + score.toFixed(2) + "%!";
+  initialsInput.style.display = "block";
+  scoreElement.textContent = "Score: " + score.toFixed(2) + "%";
+  saveButton.style.display = "block";
+}
+
 //Save intials and save score to Local

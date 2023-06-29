@@ -1,5 +1,4 @@
 //Questions
-//Questions
 var questions = [
     {
       question: "What programming language is used to style a webpage?",
@@ -30,6 +29,7 @@ var resultElement = document.getElementById("result");
 var initialsInput = document.getElementById("initials");
 var scoreElement = document.getElementById("score");
 var saveButton = document.getElementById("save");
+var saveContainer = document.getElementById("save-container");
 
 //Start function
 function startQuiz() {
@@ -87,14 +87,33 @@ function checkAnswer(event) {
 }
 //Timer stop and score calculation
 function endQuiz() {
-  clearInterval(timerInterval); 
+  clearInterval(timerInterval);
   questionElement.textContent = "Quiz Over!";
   choicesElement.innerHTML = "";
   var score = (correctAnswers / questions.length) * 100;
   resultElement.textContent = "Your score: " + score.toFixed(2) + "%!";
   initialsInput.style.display = "block";
+  initialsInput.style.margin = "auto"; // Center the input field
   scoreElement.textContent = "Score: " + score.toFixed(2) + "%";
-  saveButton.style.display = "block";
+  saveContainer.style.display = "block";
+  saveContainer.style.margin = "auto";
+
+  //restart quiz funtion
 }
 
-//Save intials and save score to Local
+//Save intials and score to Local
+function saveScore() {
+  var initials = initialsInput.value.trim();
+  var score = parseFloat(scoreElement.textContent.replace("Score: ", ""));
+  
+  if (initials !== "" && !isNaN(score)) {
+    var quizData = {
+      initials: initials,
+      score: score
+    };
+    localStorage.setItem("quizData", JSON.stringify(quizData));
+    console.log("Score saved successfully!");
+  } else {
+    console.log("Invalid data. Score not saved!");
+  }
+}

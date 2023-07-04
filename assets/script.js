@@ -105,15 +105,40 @@ function endQuiz() {
 function saveScore() {
   var initials = initialsInput.value.trim();
   var score = parseFloat(scoreElement.textContent.replace("Score: ", ""));
-  
+
+  var highScoreData = localStorage.getItem("quizData");
+  var currentHighScore = 0;
+
+  if (highScoreData) {
+    var highScore = JSON.parse(highScoreData);
+    currentHighScore = highScore.score;
+  }
+
   if (initials !== "" && !isNaN(score)) {
-    var quizData = {
-      initials: initials,
-      score: score
-    };
-    localStorage.setItem("quizData", JSON.stringify(quizData));
-    console.log("Score saved successfully!");
-  } else {
-    console.log("Invalid data. Score not saved!");
+    if (score > currentHighScore) {
+      var quizData = {
+        initials: initials,
+        score: score
+      };
+      localStorage.setItem("quizData", JSON.stringify(quizData));
+    }
+  }  
+}
+
+// Load high score
+function loadHighScore() {
+  var highScoreData = localStorage.getItem("quizData");
+  if (highScoreData) {
+    var highScore = JSON.parse(highScoreData);
+    var initials = highScore.initials;
+    var score = highScore.score;
+
+    var highScoreText = "High Score: " + initials + " - " + score.toFixed(2) + "%";
+    var highScoreElement = document.getElementById("high-score");
+    highScoreElement.textContent = highScoreText;
+    highScoreElement.style.display = "block";
   }
 }
+
+// Call the function to load and display the high score
+loadHighScore();
